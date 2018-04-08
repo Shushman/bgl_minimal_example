@@ -345,7 +345,6 @@ int main(int argc, char* argv[])
       return 0;
     }
 
-    std::cout<<v_walk<<std::endl;
     // Add to path weight
     path_weight += roadmap_graph[edge_pair.first].e_weight;
 
