@@ -24,7 +24,7 @@ namespace po = boost::program_options;
 struct VProps
 {
   // Underlying state of vertex
-  Eigen::VectorXd v_state;
+  std::shared_ptr<Eigen::VectorXd> v_state;
 };
 
 // Consts to represent collision status of edge
@@ -51,7 +51,7 @@ typedef boost::graph_traits<Graph>::out_edge_iterator OutEdgeIter;
 
 // Boost property maps needed to read in roadmap
 // Property type specified as second template parameter
-typedef boost::property_map<Graph, Eigen::VectorXd VProps::*>::type VPropStateMap; // For vertex state
+typedef boost::property_map<Graph, std::shared_ptr<Eigen::VectorXd> VProps::*>::type VPropStateMap; // For vertex state
 typedef boost::property_map<Graph, double EProps::*>::type EPWeightMap;
 typedef boost::property_map<Graph, boost::vertex_index_t>::type VertexIndexMap;
 
@@ -91,7 +91,9 @@ put(const RoadmapFromFilePutStateMap& map,
     const std::string representation)
 {
   // get() returns a reference to the underlying map value type
-  Eigen::VectorXd& v_state_ptr{get(map.mPropMap, k)};
+  //Eigen::VectorXd& v_state_ptr{get(map.mPropMap, k)};
+  //std::shared_ptr<Eigen::VectorXd> v_state_ptr(get(map.mPropMap, k));
+  //Eigen::VectorXd* v_state_ptr(get(map.mPropMap, k));
 
   // Create a vector of length map.mDim, fill it with the values
   // and map the above vector pointer to it
@@ -101,7 +103,7 @@ put(const RoadmapFromFilePutStateMap& map,
     ss >> v_state_values[ui];
   }
 
-  v_state_ptr = Eigen::Map<Eigen::VectorXd>(v_state_values.data(), map.mDim);
+  get(map.mPropMap, k) = std::make_shared<Eigen::VectorXd>(Eigen::Map<Eigen::VectorXd>(v_state_values.data(), map.mDim));
 }
 
 
@@ -130,10 +132,10 @@ void generateVertices(Graph& _roadmap,
 double getL2Weight(const Graph & _roadmap, const Vertex& v1, const Vertex& v2)
 {
   // Look up the underlying states
-  Eigen::VectorXd state1{_roadmap[v1].v_state};
-  Eigen::VectorXd state2{_roadmap[v2].v_state};
+  // Eigen::VectorXd state1{_roadmap[v1].v_state};
+  // Eigen::VectorXd state2{_roadmap[v2].v_state};
 
-  double weight{(state1 - state2).norm()};
+  double weight{(*(_roadmap[v1].v_state) - *(_roadmap[v2].v_state)).norm()};
 
   return weight;
 }
