@@ -90,11 +90,6 @@ put(const RoadmapFromFilePutStateMap& map,
     const typename RoadmapFromFilePutStateMap::key_type & k,
     const std::string representation)
 {
-  // get() returns a reference to the underlying map value type
-  //Eigen::VectorXd& v_state_ptr{get(map.mPropMap, k)};
-  //std::shared_ptr<Eigen::VectorXd> v_state_ptr(get(map.mPropMap, k));
-  //Eigen::VectorXd* v_state_ptr(get(map.mPropMap, k));
-
   // Create a vector of length map.mDim, fill it with the values
   // and map the above vector pointer to it
   std::vector<double> v_state_values(map.mDim);
@@ -103,6 +98,8 @@ put(const RoadmapFromFilePutStateMap& map,
     ss >> v_state_values[ui];
   }
 
+  // get() returns the value of the underlying map value type
+  // Which is a shared ptr
   get(map.mPropMap, k) = std::make_shared<Eigen::VectorXd>(Eigen::Map<Eigen::VectorXd>(v_state_values.data(), map.mDim));
 }
 
@@ -131,10 +128,7 @@ void generateVertices(Graph& _roadmap,
 // heuristic of the 'this' vertex from the argument vertex
 double getL2Weight(const Graph & _roadmap, const Vertex& v1, const Vertex& v2)
 {
-  // Look up the underlying states
-  // Eigen::VectorXd state1{_roadmap[v1].v_state};
-  // Eigen::VectorXd state2{_roadmap[v2].v_state};
-
+  // Look up the underlying states and get their L2 diff norm
   double weight{(*(_roadmap[v1].v_state) - *(_roadmap[v2].v_state)).norm()};
 
   return weight;
