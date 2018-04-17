@@ -1,5 +1,17 @@
 # BGL_MINIMAL_EXAMPLE
 
+This repository provides a minimal working example of running [A* graph search](https://brilliant.org/wiki/a-star-search/) with Boost Graph Library (https://www.boost.org/doc/libs/1_66_0/libs/graph/doc/index.html). There are more general examples of this use case [[1](https://www.boost.org/doc/libs/1_54_0/libs/graph/example/astar-cities.cpp),[2](https://github.com/wpm/Astar-Maze-Solver)], but this example focuses on the use case for [roadmap-based path planning](http://planning.cs.uiuc.edu/node240.html). 
+
+Here, each vertex has an attribute which is the [configuration space](http://planning.cs.uiuc.edu/node123.html) point that it represents, and each edge has attributes for the edge weight (typically some distance function between vertices) and the edge status (whether collision-free or not).
+
+The following behaviour is exemplified here :
+
+- Loading a Boost `.graphml` file that defines the configuration that each vertex represents, and the edges connecting vertices. This is sometimes called an explicit roadmap (graph).
+- Defining the `struct` types that represent the attributes of the vertices and edges of the graph.
+- Creating a `Boost Graph` (specifically an undirected graph represented as an adjacency list), as well as the [property maps](https://www.boost.org/doc/libs/1_55_0/libs/graph/doc/using_property_maps.html) that map the vertices and edges to their attributes.
+- Defining a [heuristic function](https://www.boost.org/doc/libs/1_46_0/libs/graph/doc/astar_search.html) for A* search that depends on the underlying configurations of the vertices (as they typically should).
+- Running `boost::astar_search` in its most general form with all the relevant arguments, to obtain the shortest path between two randomly chosen vertices.
+
 To run, clone the repo and do the following inside the top-level directory of the repo:
 
 ```

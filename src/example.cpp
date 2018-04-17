@@ -135,7 +135,7 @@ double getL2Weight(const Graph & _roadmap, const Vertex& v1, const Vertex& v2)
 }
 
 // Fill in the edge weight map for the graph
-// TODO : Needs some weight function that takes in two Eigen Vectors
+// NOTE : This needs some weight function that takes in two Eigen Vectors
 // and returns the weight. Above I've defined a default value that just takes the norm
 void generateEdges(Graph & _roadmap,
                    EPWeightMap _weight_map)
