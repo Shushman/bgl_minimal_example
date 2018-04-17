@@ -221,7 +221,7 @@ public:
 };
 
 
-// TODO : Currently this assumes all edges are free
+// NOTE : Currently this assumes all edges are free
 // In reality you need to step over embedded configurations in edge
 // And return accordingly
 bool checkEdgeFree(const Edge& e)
@@ -352,31 +352,3 @@ int main(int argc, char* argv[])
   return 0;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

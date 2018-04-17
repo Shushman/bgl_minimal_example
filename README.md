@@ -34,3 +34,9 @@ cmake ..
 make
 ./example --r ../data/halton_2d_withedges.graphml --d 2
 ```
+
+## Additional Comments
+
+The `data/` folder has an example `.graphml` file where the vertices are sampled on a 2D unit grid. The roadmap has 30 vertices and the configurations are generated from a 2D [Halton sequence](https://en.wikipedia.org/wiki/Halton_sequence), and edges connect vertices with mutual Euclidean distance less than some threshold. The graphs themselves were generated with [NetworkX](https://networkx.github.io/documentation/networkx-1.10/reference/readwrite.graphml.html) where the configurations are specified as vertex attributes.
+
+It is not best practice to place everything in one `.cpp` file, especially when there are reusable modules, but I have done so for the purposes of this minimal example to make it easier to follow. Finally, I have put in some `NOTE:` tags in the commands to highlight important points about usage. 
